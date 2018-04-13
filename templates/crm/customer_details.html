@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details for {{ customers.first_name }} </title>
+</head>
+<body>
+<h2>Customer Information</h2>
+{{ customers.first_name }} {{ customers.last_name }}
+{{ customers.date_of_birth }}
+{{ customers.address.city }} {{ customers.address.zip_code }}
+{{ customers.gender }}
+
+
+<div>
+<h3>Product Information</h3>
+{% if subscriptions %}
+<p> {{ customers.first_name }} has following packages: </p>
+<ul>
+    {% for s in subscriptions %}
+    <li>{{ s.product.product_name }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+    <form action="" method="POST">
+    {% csrf_token %}
+    <p>There is no subscription for {{ customers.first_name }}! Offerings:</p>
+        {% for p in products %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ p.id }}" />
+            <label for="choice{{ forloop.counter }}">{{ p.product_name }}</label><br />
+        {% endfor %}
+    <input type="submit" value="Order" />
+    </form>
+{% endif %}
+</div>
+</body>
+</html>
